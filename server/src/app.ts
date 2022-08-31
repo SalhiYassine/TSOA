@@ -26,6 +26,11 @@ app.use(
   })
 );
 app.use(cookieParser('secret'));
+app.use('/docs', swaggerUi.serve, async (_req: ExRequest, res: ExResponse) => {
+  return res.send(
+    swaggerUi.generateHTML(await import('../../swagger/swagger.json'))
+  );
+});
 
 RegisterRoutes(app);
 
@@ -43,13 +48,21 @@ app.use(function errorHandler(
     });
   }
 
-  return res.status(500).json({
-    message: err.message,
-  });
+  next(err);
 });
 
-app.use('/docs', swaggerUi.serve, async (_req: ExRequest, res: ExResponse) => {
-  return res.send(
-    swaggerUi.generateHTML(await import('../../swagger/swagger.json'))
-  );
+// @ts-ignore
+app.use(function errorResponder(error: express.Error, req, res, next) {
+  // responding to client
+  // Error handling middleware functionality
+  console.log(`error : ${error.message}`); // log the error
+  const status = error.status || 400;
+  // send back an easily understandable error message to the caller
+  res.status(status).send({ body: error.message });
+});
+
+// @ts-ignore
+app.use(function failSafeHandler(error, req, res, next) {
+  // generic handler
+  res.status(500).send(error);
 });

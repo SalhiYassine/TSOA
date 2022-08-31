@@ -6,6 +6,8 @@ export interface IUser {
   firstName: string;
   lastName: string;
   password: string;
+  matchPassword: (password: string) => Promise<boolean>;
+  save: () => Promise<IUser>;
 }
 export interface ISerializedUser {
   email: string;
