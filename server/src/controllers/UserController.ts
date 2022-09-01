@@ -1,21 +1,19 @@
+import { UserService } from '../domains/User/UserService';
 import {
-  Body,
   Controller,
-  Get,
-  Middlewares,
-  Path,
   Post,
-  Query,
   Route,
-  Security,
   SuccessResponse,
   Request,
   Tags,
   Response,
 } from 'tsoa';
-import { UserService } from '../services/UserService';
+import UserRepoMongo from '../domains/User/UserRepoMongo';
+import { User } from '../models/User';
 
-const userService = new UserService();
+// @ts-ignore
+const userRepo = new UserRepoMongo(User);
+const { authenticateUser, registerOneUser } = UserService(userRepo);
 
 @Tags('User')
 @Route('user')
@@ -23,14 +21,20 @@ export class UsersController extends Controller {
   @Post('/')
   @SuccessResponse(200, 'OK')
   @Response(400, 'Could not be registered!')
-  public async signUp(@Request() req: Express.Request) {
-    return await userService.signUp(req);
+  public signUp(@Request() req: any) {
+    const { firstName, lastName, email, password } = req.body;
+    return registerOneUser({
+      firstName,
+      lastName,
+      email,
+      password,
+    });
   }
 
   @Post('/login')
   @SuccessResponse(200, 'OK')
   @Response(403, 'Could not be authenticated!')
-  public async login(@Request() req: Express.Request) {
-    return await userService.login(req);
+  public async login(@Request() req: any) {
+    return await authenticateUser(req.body.email, req.body.password);
   }
 }

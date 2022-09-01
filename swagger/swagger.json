@@ -5,28 +5,7 @@
 		"parameters": {},
 		"requestBodies": {},
 		"responses": {},
-		"schemas": {
-			"ISerializedUser": {
-				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"surname": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"email",
-					"name",
-					"surname"
-				],
-				"type": "object",
-				"additionalProperties": false
-			}
-		},
+		"schemas": {},
 		"securitySchemes": {
 			"bearerAuth": {
 				"type": "http",
@@ -53,9 +32,7 @@
 						"description": "OK",
 						"content": {
 							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ISerializedUser"
-								}
+								"schema": {}
 							}
 						}
 					},
@@ -79,7 +56,23 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ISerializedUser"
+									"properties": {
+										"surname": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"email": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"surname",
+										"name",
+										"email"
+									],
+									"type": "object"
 								}
 							}
 						}

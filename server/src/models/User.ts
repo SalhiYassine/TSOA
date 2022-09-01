@@ -20,7 +20,7 @@ const userSchema = new Schema<IUser>(
     email: { type: String, unique: true, index: true },
     firstName: { type: String },
     lastName: { type: String },
-    password: { type: String, select: false },
+    password: { type: String },
   },
   {
     timestamps: true,
