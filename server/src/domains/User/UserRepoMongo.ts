@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import { UserCreationParams } from '../../repository/userRepository';
 import { IUser } from '../../models/User';
-import RepoMongo from '../repositories/mongo/RepoMongo';
+import RepoMongo from '../data/mongo/RepoMongo';
 import { IUserRepository } from './types';
 import UserEntityMongo from './UserEntityMongo';
 
@@ -24,12 +25,7 @@ export default class UserRepoMongo
     return null;
   }
 
-  async createOneUser(creationParams: {
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-  }) {
+  async createOneUser(creationParams: UserCreationParams) {
     const user = new this.Model(creationParams);
     await user.save();
     return new UserEntityMongo(user);

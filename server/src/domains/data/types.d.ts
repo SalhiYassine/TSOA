@@ -5,3 +5,10 @@ export interface IRepository {
 export interface IEntity {
   id: string;
 }
+
+export interface UserCreationParams {
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+}

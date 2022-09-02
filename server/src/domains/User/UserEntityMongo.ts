@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { IUser } from 'src/models/User';
-import EntityMongo from '../repositories/mongo/EntityMongo';
+import { IUser } from '../../models/User';
+import EntityMongo from '../data/mongo/EntityMongo';
 import { IUserEntity } from './types';
 import * as bcrypt from 'bcrypt';
 
@@ -8,10 +8,10 @@ export default class UserEntityMongo
   extends EntityMongo
   implements IUserEntity
 {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
+  protected email: string;
+  protected firstName: string;
+  protected lastName: string;
+  protected password: string;
 
   constructor(user: mongoose.Document<IUser> & IUser) {
     super(`${user._id}`);
@@ -26,10 +26,10 @@ export default class UserEntityMongo
   getId(): string {
     return this.id;
   }
-  getFirstName(): string {
+  getName(): string {
     return this.firstName;
   }
-  getLastName(): string {
+  getSurname(): string {
     return this.lastName;
   }
   getEmail(): string {
@@ -37,8 +37,6 @@ export default class UserEntityMongo
   }
 
   async passwordMatch(password: string): Promise<boolean> {
-    console.log(password, this.password);
-
     return await bcrypt.compare(password, this.password);
   }
 
